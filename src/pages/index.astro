@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import HangerArt from '../components/HangerArt.astro';
+import { site, productLines } from '../data/site';
+
+const products = (await getCollection('products', (p) => !p.data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+const posts = (await getCollection('log', (p) => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+---
+<Base>
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <p class="eyebrow">Made in San Diego</p>
+        <h1>Steel medal hangers, cut and finished by hand.</h1>
+        <p class="lede">SanDiegoMake is a small family shop making personalized, powder-coated steel displays for the medals your athletes earned, plus whatever else we're building in the shop.</p>
+        <div class="btn-row">
+          <a class="btn btn--accent" href="/products/">See the hangers</a>
+          <a class="btn btn--ghost" href="/custom-orders/">Team &amp; bulk orders</a>
+        </div>
+        <p class="hero__buy muted">Buy on <a href={site.links.amazon} rel="noopener">Amazon</a> or <a href={site.links.etsy} rel="noopener">Etsy</a>.</p>
+      </div>
+      <div class="hero__art card">
+        <HangerArt label="FINISHER" color="#17191c" medals={6} />
+      </div>
+    </div>
+  </section>
+
+  <section class="strip">
+    <div class="wrap strip__in">
+      <div><b>0.1" steel</b><span>Sturdy steel plate, 20" wide</span></div>
+      <div><b>Powder coated</b><span>Glossy color, smooth edges</span></div>
+      <div><b>Personalized</b><span>Names, colors and graphics</span></div>
+      <div><b>Ships fast</b><span>USPS Priority Mail, usually 2–3 days in the US</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Popular</p>
+          <h2>Medal hangers</h2>
+        </div>
+        <a class="btn btn--ghost" href="/products/">All products</a>
+      </div>
+      <div class="grid">{products.map((p) => <ProductCard product={p} />)}</div>
+    </div>
+  </section>
+
+  <section class="section bulk">
+    <div class="wrap bulk__in">
+      <div>
+        <p class="eyebrow">For teams, clubs and races</p>
+        <h2>Need 20, 50 or 500?</h2>
+        <p class="lede">Custom hangers with your club logo or race name, priced for teams, running clubs, race directors, schools and gyms.</p>
+      </div>
+      <div><a class="btn btn--accent" href="/custom-orders/">Request a quote</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">What we make</p>
+      <h2>Product lines</h2>
+      <div class="grid lines">
+        {productLines.map((l) => (
+          <div class={`card line ${l.live ? '' : 'line--soon'}`}>
+            <h3>{l.name}</h3>
+            <p class="muted">{l.blurb}</p>
+            {l.live ? <a href="/products/">Browse →</a> : <span class="tag">Coming soon</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section section--tight">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="eyebrow">From the shop</p>
+            <h2>Build log</h2>
+          </div>
+          <a class="btn btn--ghost" href="/log/">All posts</a>
+        </div>
+        <div class="grid">
+          {posts.map((p) => (
+            <a class="card post" href={`/log/${p.id}/`}>
+              <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+              <h3>{p.data.title}</h3>
+              <p class="muted">{p.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero { padding: clamp(40px, 7vw, 80px) 0 clamp(32px, 5vw, 56px); }
+  .hero__in { display: grid; gap: 40px; grid-template-columns: 1.1fr 1fr; align-items: center; }
+  @media (max-width: 860px) { .hero__in { grid-template-columns: 1fr; } }
+  .hero__art { box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+  .hero__buy { margin-top: 18px; font-size: .95rem; }
+  .strip { background: var(--surface); border-block: 1px solid var(--line); }
+  .strip__in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 26px; padding-bottom: 26px; }
+  @media (max-width: 800px) { .strip__in { grid-template-columns: 1fr 1fr; } }
+  .strip__in div { display: grid; gap: 2px; }
+  .strip__in b { font-family: var(--font-head); font-size: 1.05rem; }
+  .strip__in span { color: var(--ink-2); font-size: .9rem; line-height: 1.4; }
+  .head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .head h2 { margin: 0; }
+  .bulk { background: var(--dark); color: #f1eee8; }
+  .bulk .lede { color: #c3c6cb; }
+  .bulk .eyebrow { color: #f08a5d; }
+  .bulk__in { display: flex; gap: 32px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .bulk__in > div:first-child { max-width: 640px; }
+  .lines { margin-top: 8px; }
+  .line { padding: 24px; }
+  .line--soon { background: transparent; border-style: dashed; }
+  .line a { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .post { padding: 22px; text-decoration: none; transition: box-shadow .15s; }
+  .post:hover { color: inherit; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+  .post time { font-size: .82rem; color: var(--ink-2); font-weight: 600; }
+  .post h3 { margin-top: .4em; }
+  .post p { margin: 0; font-size: .95rem; }
+</style>

@@ -1,0 +1,35 @@
+---
+// Placeholder illustration of a medal hanger, used until a real photo is added.
+interface Props { label?: string; color?: string; medals?: number; class?: string }
+const { label = 'SANDIEGOMAKE', color = '#2a2e33', medals = 5, class: cls } = Astro.props;
+const n = Math.max(2, Math.min(7, medals));
+const xs = Array.from({ length: n }, (_, i) => 60 + (i * 280) / (n - 1));
+const ribbon = ['#c2410c', '#2563eb', '#15803d', '#7c3aed', '#ca8a04', '#be185d', '#0f766e'];
+const size = label.length > 10 ? 30 : label.length > 6 ? 40 : 52;
+---
+<svg class={cls} viewBox="0 0 400 300" role="img" aria-label={`${label} medal hanger illustration`}>
+  <rect width="400" height="300" fill="#ebe7e0" />
+  <rect x="0" y="0" width="400" height="300" fill="url(#g)" opacity=".5" />
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" /><stop offset="1" stop-color="#d6d1c8" />
+    </linearGradient>
+  </defs>
+  <!-- wall screws -->
+  <circle cx="44" cy="70" r="4" fill="#9aa0a6" /><circle cx="356" cy="70" r="4" fill="#9aa0a6" />
+  <!-- steel plate -->
+  <rect x="24" y="44" width="352" height="74" rx="10" fill={color} />
+  <text x="200" y={82 + size * 0.35} text-anchor="middle" font-family="Archivo Variable, Arial Black, sans-serif"
+        font-weight="800" font-size={size} letter-spacing="2" fill="#ebe7e0">{label}</text>
+  <!-- hooks bar -->
+  <rect x="24" y="118" width="352" height="12" rx="4" fill={color} />
+  {xs.map((x, i) => (
+    <g>
+      <path d={`M${x} 130 v10 q0 8 8 8`} stroke={color} stroke-width="5" fill="none" stroke-linecap="round" />
+      <path d={`M${x - 9} 146 L${x + 9} 146 L${x + 4} ${200 + (i % 2) * 14} L${x - 4} ${200 + (i % 2) * 14} Z`}
+            fill={ribbon[i % ribbon.length]} />
+      <circle cx={x} cy={222 + (i % 2) * 14} r="22" fill="#d4a62a" stroke="#a37b12" stroke-width="3" />
+      <circle cx={x} cy={222 + (i % 2) * 14} r="12" fill="none" stroke="#a37b12" stroke-width="2" />
+    </g>
+  ))}
+</svg>

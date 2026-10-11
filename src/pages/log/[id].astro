@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import YouTube from '../../components/YouTube.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('log', (p) => !p.data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const date = d.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+<Base title={d.title} description={d.summary} image={d.cover?.src}>
+  <article class="section">
+    <div class="wrap">
+      <p class="crumbs"><a href="/log/">Build log</a> / <time datetime={d.date.toISOString()}>{date}</time></p>
+      <h1 class="title">{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+      {d.cover && <Image class="cover" src={d.cover} alt="" widths={[800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 860px" loading="eager" />}
+      {d.youtube && <div class="vid"><YouTube id={d.youtube} title={d.title} /></div>}
+      <div class="prose body"><Content /></div>
+    </div>
+  </article>
+</Base>
+<style>
+  .crumbs { font-size: .9rem; color: var(--ink-2); margin-bottom: 20px; }
+  .crumbs a { color: var(--ink-2); }
+  .title { max-width: 22ch; }
+  .cover, .vid { max-width: 860px; margin: 32px 0; border-radius: var(--radius); }
+  .body { margin-top: 32px; }
+</style>

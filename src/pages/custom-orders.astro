@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+const endpoint = site.quoteFormEndpoint;
+---
+<Base title="Custom & Bulk Orders" description="Custom steel medal hangers for teams, running clubs, races, schools and gyms. Request a quote from SanDiegoMake.">
+  <section class="section">
+    <div class="wrap co">
+      <div>
+        <p class="eyebrow">Custom &amp; bulk</p>
+        <h1>Hangers for your whole team, club or race.</h1>
+        <p class="lede">We cut custom designs in-house, so we can put your logo, race name or team colors on steel and make as many as you need.</p>
+        <h2 class="h3">Good fits</h2>
+        <ul class="fits">
+          <li><b>Race directors</b>: finisher or volunteer gifts with your race branding</li>
+          <li><b>Running clubs</b>: member hangers with the club logo</li>
+          <li><b>Teams and leagues</b>: end-of-season gifts with each player's name</li>
+          <li><b>Gyms, studios and schools</b>: awards displays and fundraisers</li>
+        </ul>
+        <h2 class="h3">How it works</h2>
+        <ol class="steps">
+          <li>Tell us what you need with the form.</li>
+          <li>We send a quote and a design proof.</li>
+          <li>You approve it, we cut, coat and ship.</li>
+        </ol>
+        <p class="muted">Prefer email? Write to <a href={`mailto:${site.email}`}>{site.email}</a>. Have a logo? Send it by email after you submit.</p>
+      </div>
+
+      <form class="card form" id="quote" method="POST" action={endpoint || undefined} data-email={site.email}>
+        <h2 class="h3">Request a quote</h2>
+        <label>Name<input name="name" required autocomplete="name" /></label>
+        <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+        <label>Team, club or organization <span class="opt">(optional)</span><input name="organization" autocomplete="organization" /></label>
+        <div class="row">
+          <label>Quantity<input name="quantity" type="number" min="1" inputmode="numeric" required /></label>
+          <label>Needed by <span class="opt">(optional)</span><input name="needed_by" type="date" /></label>
+        </div>
+        <label>Sport or event<input name="sport" placeholder="e.g. half marathon, U12 soccer" /></label>
+        <label>Details<textarea name="details" rows="5" required placeholder="Text, logo, colors, anything else we should know"></textarea></label>
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+        <button class="btn btn--accent" type="submit">Send request</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+<style>
+  .co { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .co { grid-template-columns: 1fr; } }
+  .h3 { font-size: 1.25rem; margin-top: 1.6em; }
+  .fits, .steps { padding-left: 1.2em; }
+  .fits li, .steps li { margin-bottom: .45em; }
+  .fits li::marker, .steps li::marker { color: var(--accent); font-weight: 700; }
+  .form { padding: 28px; display: grid; gap: 16px; position: sticky; top: 88px; }
+  .form .h3 { margin: 0; }
+  .form label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 5px; font-weight: 600; font-size: .92rem; }
+  .row label { align-content: start; }
+  .opt { font-weight: 400; color: var(--ink-2); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 420px) { .row { grid-template-columns: 1fr; } }
+  input, textarea {
+    font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%;
+  }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .form button { justify-self: start; }
+  .status { margin: 0; font-weight: 600; }
+  .status.ok { color: #15803d; }
+  .status.err { color: #b91c1c; }
+</style>
+<script>
+  const form = document.getElementById('quote') as HTMLFormElement | null;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const status = form.querySelector('.status') as HTMLElement;
+    const data = new FormData(form);
+    if ((data.get('_gotcha') as string)?.length) return;
+    const action = form.getAttribute('action');
+    if (!action) {
+      // No form service set up yet: open an email with the details filled in.
+      const lines = [...data.entries()].filter(([k]) => k !== '_gotcha').map(([k, v]) => `${k}: ${v}`);
+      location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('Custom / bulk quote request')}&body=${encodeURIComponent(lines.join('\n'))}`;
+      return;
+    }
+    status.className = 'status'; status.textContent = 'Sending…';
+    try {
+      const res = await fetch(action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error();
+      form.reset();
+      status.className = 'status ok'; status.textContent = 'Thanks! We will reply within a couple of days.';
+    } catch {
+      status.className = 'status err'; status.textContent = `Something went wrong. Please email ${form.dataset.email}.`;
+    }
+  });
+</script>

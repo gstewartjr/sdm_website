@@ -1,0 +1,13 @@
+/collections/*        /products/        301
+/pages/about          /about/           301
+/pages/gallery-1      /products/        301
+/pages/icons          /products/        301
+/products/custom-20-running     /products/custom-running/     301
+/products/custom-20-soccer-m    /products/custom-soccer/      301
+/products/custom-20-gym-f       /products/custom-gymnastics/  301
+/products/custom-20-baseball-m  /products/custom-baseball/    301
+/products/custom-20-hockey      /products/custom-hockey/      301
+/products/miles-managed-medal-hanger-20  /products/miles-managed/  301
+/products/magical-miles         /products/magical-miles/      301
+/cart                 /products/        301
+/account/*            /                 301

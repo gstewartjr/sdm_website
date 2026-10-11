@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="About" description="SanDiegoMake is a small family business making steel medal hangers and other goods in San Diego.">
+  <section class="section">
+    <div class="wrap ab">
+      <div class="prose">
+        <p class="eyebrow">About</p>
+        <h1>A small family shop in San Diego.</h1>
+        <p class="lede">SanDiegoMake is run by Greg, with help from family. Everything we sell is designed and made by us.</p>
+        <p>Hangers are cut from steel and sanded on the machines at Community Werkshop in San Diego, then powder coated for a glossy finish that also smooths the edges. The family helps with packaging and labels, and gets orders to the post office.</p>
+        <p>Medal hangers are where we started. We also design electronics and other metal products, and we share that work in the <a href="/log/">build log</a>.</p>
+
+        <h2>Shipping</h2>
+        <p>Free shipping by USPS Priority Mail, usually 2–3 days within the USA. Most orders are made and shipped within a week; orders placed by Thursday night usually ship the following Monday.</p>
+
+        <h2>Returns and exchanges</h2>
+        <p>Returns, exchanges and cancellations are accepted. Contact us within 14 days of delivery and ship items back within 30 days of delivery. Cancellations must be requested within 2 days of purchase. Buyers pay return shipping. Orders placed on Amazon or Etsy follow that marketplace's return process.</p>
+      </div>
+      <aside class="card contact">
+        <h2 class="h3">Contact</h2>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p class="muted">{site.location}</p>
+        <div class="btn-row">
+          <a class="btn btn--ghost" href={site.links.amazon} rel="noopener">Amazon</a>
+          <a class="btn btn--ghost" href={site.links.etsy} rel="noopener">Etsy</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+<style>
+  .ab { display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .ab { grid-template-columns: 1fr; } }
+  .contact { padding: 24px; }
+  .contact .h3 { font-size: 1.2rem; }
+  .contact a { overflow-wrap: anywhere; }
+</style>

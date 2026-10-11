@@ -1,0 +1,68 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import HangerArt from '../../components/HangerArt.astro';
+import YouTube from '../../components/YouTube.astro';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products', (p) => !p.data.draft);
+  return products.map((product) => ({ params: { id: product.id }, props: { product } }));
+}
+const { product } = Astro.props;
+const d = product.data;
+const { Content } = await render(product);
+const amazon = d.amazon ?? site.links.amazon;
+const etsy = d.etsy ?? site.links.etsy;
+---
+<Base title={d.title} description={d.summary} image={d.image?.src}>
+  <section class="section">
+    <div class="wrap">
+      <p class="crumbs"><a href="/products/">Products</a> / {d.title}</p>
+      <div class="pd">
+        <div class="pd__media">
+          <div class="card">
+            {d.image
+              ? <Image src={d.image} alt={d.title} widths={[600, 1000, 1400]} sizes="(max-width: 860px) 100vw, 560px" loading="eager" />
+              : <HangerArt label={d.label} />}
+          </div>
+          {d.gallery.length > 0 && (
+            <div class="thumbs">
+              {d.gallery.map((g) => <Image class="card" src={g} alt={`${d.title} detail`} width={300} />)}
+            </div>
+          )}
+        </div>
+        <div>
+          <span class="tag">{d.kind === 'custom' ? 'Personalized' : 'Ready to ship'}</span>
+          <h1>{d.title}</h1>
+          <p class="lede">{d.summary}</p>
+          <div class="prose"><Content /></div>
+          {d.features.length > 0 && (
+            <ul class="feat">{d.features.map((f) => <li>{f}</li>)}</ul>
+          )}
+          <div class="btn-row buy">
+            <a class="btn btn--accent" href={amazon} rel="noopener">Buy on Amazon</a>
+            <a class="btn btn--ghost" href={etsy} rel="noopener">Buy on Etsy</a>
+          </div>
+          <p class="muted small">Need several, or a logo? <a href="/custom-orders/">Request a custom or bulk quote.</a></p>
+        </div>
+      </div>
+      {d.youtube && <div class="vid"><YouTube id={d.youtube} title={d.title} /></div>}
+    </div>
+  </section>
+</Base>
+<style>
+  .crumbs { font-size: .9rem; color: var(--ink-2); margin-bottom: 24px; }
+  .crumbs a { color: var(--ink-2); }
+  .pd { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .pd { grid-template-columns: 1fr; gap: 28px; } }
+  .pd h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); margin-top: .4em; }
+  .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+  .feat { padding-left: 1.2em; margin: 0 0 1.5em; }
+  .feat li { margin-bottom: .3em; }
+  .feat li::marker { color: var(--accent); }
+  .buy { margin-bottom: 16px; }
+  .small { font-size: .92rem; }
+  .vid { margin-top: 56px; max-width: 860px; }
+</style>
