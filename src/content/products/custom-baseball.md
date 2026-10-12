@@ -9,6 +9,7 @@ features:
   - Player name, number and team color
   - Powder-coated finish
 order: 4
+draft: true # hidden until it has a photo
 ---
 
 Personalized with a player name and team color, built to hang a full season of

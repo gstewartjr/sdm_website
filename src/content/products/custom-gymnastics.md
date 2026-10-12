@@ -9,6 +9,7 @@ features:
   - Name, color and gymnastics graphics
   - Powder-coated finish
 order: 3
+draft: true # hidden until it has a photo
 ---
 
 Sized for a growing collection of meet medals, with a name and graphic that are

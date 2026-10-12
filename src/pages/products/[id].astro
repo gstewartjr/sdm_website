@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 const d = product.data;
 const { Content } = await render(product);
-const amazon = d.amazon ?? site.links.amazon;
+const amazon = d.amazon === false ? null : (d.amazon ?? site.links.amazon);
 const etsy = d.etsy ?? site.links.etsy;
 ---
 <Base title={d.title} description={d.summary} image={d.image?.src}>
@@ -42,8 +42,8 @@ const etsy = d.etsy ?? site.links.etsy;
             <ul class="feat">{d.features.map((f) => <li>{f}</li>)}</ul>
           )}
           <div class="btn-row buy">
-            <a class="btn btn--accent" href={amazon} rel="noopener">Buy on Amazon</a>
-            <a class="btn btn--ghost" href={etsy} rel="noopener">Buy on Etsy</a>
+            {amazon && <a class="btn btn--accent" href={amazon} rel="noopener">Buy on Amazon</a>}
+            <a class={amazon ? "btn btn--ghost" : "btn btn--accent"} href={etsy} rel="noopener">Buy on Etsy</a>
           </div>
           <p class="muted small">Need several, or a logo? <a href="/custom-orders/">Request a custom or bulk quote.</a></p>
         </div>

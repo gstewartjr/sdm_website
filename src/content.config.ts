@@ -16,7 +16,7 @@ const products = defineCollection({
       image: image().optional(),
       gallery: z.array(image()).default([]),
       features: z.array(z.string()).default([]),
-      amazon: z.string().url().optional(),
+      amazon: z.union([z.string().url(), z.literal(false)]).optional(), // false hides the Amazon button
       etsy: z.string().url().optional(),
       youtube: z.string().optional(), // YouTube video ID
       order: z.number().default(100),

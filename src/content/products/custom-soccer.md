@@ -9,6 +9,7 @@ features:
   - Player name and team color
   - Powder-coated finish
 order: 2
+draft: true # hidden until it has a photo
 ---
 
 A team-season favorite. Great as a coach's or end-of-season gift. Ordering for a

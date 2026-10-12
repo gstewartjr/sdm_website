@@ -9,6 +9,7 @@ features:
   - Player name and team color
   - Powder-coated finish
 order: 5
+draft: true # hidden until it has a photo
 ---
 
 Personalized hockey medal display, cut from steel and powder coated.

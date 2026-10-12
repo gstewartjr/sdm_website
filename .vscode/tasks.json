@@ -1,0 +1,41 @@
+{
+  // Run with Terminal > Run Task… (or Ctrl+Shift+B for the default one).
+  // Then open http://localhost:4321/ in your browser. Stop with Ctrl+C in the terminal.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Preview website",
+      "detail": "Live preview at http://localhost:4321/ — updates as you edit",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "astro",
+        "pattern": { "regexp": "^x^" },
+        "background": { "beginsPattern": "astro", "endsPattern": "(Local\\s+http|watching for file changes)" }
+      }
+    },
+    {
+      "label": "Build website",
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Preview production build",
+      "detail": "Builds the site exactly as it will deploy, then serves it at http://localhost:4321/",
+      "type": "npm",
+      "script": "preview",
+      "dependsOn": "Build website",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "astro",
+        "pattern": { "regexp": "^x^" },
+        "background": { "beginsPattern": "astro", "endsPattern": "Local\\s+http" }
+      }
+    }
+  ]
+}

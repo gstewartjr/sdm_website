@@ -2,8 +2,11 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
-import HangerArt from '../components/HangerArt.astro';
-import { site, productLines } from '../data/site';
+import { Image } from 'astro:assets';
+import banner from '../assets/banner.jpg';
+import fontsColors from '../assets/fonts-colors.jpg';
+import khaleesi from '../assets/khaleesi-fork.jpg';
+import { site } from '../data/site';
 
 const products = (await getCollection('products', (p) => !p.data.draft))
   .sort((a, b) => a.data.order - b.data.order)
@@ -14,6 +17,10 @@ const posts = (await getCollection('log', (p) => !p.data.draft))
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 ---
 <Base>
+  <section class="banner">
+    <Image src={banner} alt="Three kids holding their personalized steel medal hangers: Antonio #8 in black, Level 4 in white, and Avery in pink" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" />
+  </section>
+
   <section class="hero">
     <div class="wrap hero__in">
       <div>
@@ -27,7 +34,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         <p class="hero__buy muted">Buy on <a href={site.links.amazon} rel="noopener">Amazon</a> or <a href={site.links.etsy} rel="noopener">Etsy</a>.</p>
       </div>
       <div class="hero__art card">
-        <HangerArt label="FINISHER" color="#17191c" medals={6} />
+        <Image src={fontsColors} alt="Font and color options: sample hangers in clear, gold, teal, pink, blue, red, copper, black and white, with fonts including Arial, Georgia, Lithos, CopperPlate and Yoda" widths={[600, 1000, 1440]} sizes="(max-width: 860px) 100vw, 560px" loading="eager" />
       </div>
     </div>
   </section>
@@ -37,7 +44,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       <div><b>0.1" steel</b><span>Sturdy steel plate, 20" wide</span></div>
       <div><b>Powder coated</b><span>Glossy color, smooth edges</span></div>
       <div><b>Personalized</b><span>Names, colors and graphics</span></div>
-      <div><b>Ships fast</b><span>USPS Priority Mail, usually 2–3 days in the US</span></div>
+      <div><b>Free shipping</b><span>Order by Thursday night, ships the following Monday</span></div>
     </div>
   </section>
 
@@ -65,22 +72,6 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <p class="eyebrow">What we make</p>
-      <h2>Product lines</h2>
-      <div class="grid lines">
-        {productLines.map((l) => (
-          <div class={`card line ${l.live ? '' : 'line--soon'}`}>
-            <h3>{l.name}</h3>
-            <p class="muted">{l.blurb}</p>
-            {l.live ? <a href="/products/">Browse →</a> : <span class="tag">Coming soon</span>}
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
   {posts.length > 0 && (
     <section class="section section--tight">
       <div class="wrap">
@@ -103,13 +94,30 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       </div>
     </section>
   )}
+
+  <section class="section shop">
+    <div class="wrap shop__in">
+      <figure class="card shop__pic">
+        <Image src={khaleesi} alt="Khaleesi, a curly-haired dog, sitting at the wheel of a yellow forklift in the shop" widths={[600, 1000, 1400]} sizes="(max-width: 860px) 100vw, 560px" />
+        <figcaption>Khaleesi, our shop supervisor, on forklift duty.</figcaption>
+      </figure>
+      <div>
+        <p class="eyebrow">Where we work</p>
+        <h2>Made at the Werkshop</h2>
+        <p class="lede">Every hanger is made at the Werkshop, a community makerspace in San Diego.</p>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
+  .banner { background: #4e7383; }
+  .banner :global(img) { display: block; width: 100%; height: auto; max-width: 2000px; margin: 0 auto; }
   .hero { padding: clamp(40px, 7vw, 80px) 0 clamp(32px, 5vw, 56px); }
   .hero__in { display: grid; gap: 40px; grid-template-columns: 1.1fr 1fr; align-items: center; }
   @media (max-width: 860px) { .hero__in { grid-template-columns: 1fr; } }
-  .hero__art { box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+  .hero__art { box-shadow: 0 20px 50px rgba(0,0,0,.08); background: #fff; }
+  .hero__art :global(img) { display: block; width: 100%; height: auto; }
   .hero__buy { margin-top: 18px; font-size: .95rem; }
   .strip { background: var(--surface); border-block: 1px solid var(--line); }
   .strip__in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 26px; padding-bottom: 26px; }
@@ -124,10 +132,11 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   .bulk .eyebrow { color: #f08a5d; }
   .bulk__in { display: flex; gap: 32px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
   .bulk__in > div:first-child { max-width: 640px; }
-  .lines { margin-top: 8px; }
-  .line { padding: 24px; }
-  .line--soon { background: transparent; border-style: dashed; }
-  .line a { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .shop__in { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 860px) { .shop__in { grid-template-columns: 1fr; gap: 24px; } }
+  .shop__pic { margin: 0; }
+  .shop__pic :global(img) { display: block; width: 100%; height: auto; }
+  .shop__pic figcaption { padding: 12px 16px; font-size: .9rem; color: var(--ink-2); }
   .post { padding: 22px; text-decoration: none; transition: box-shadow .15s; }
   .post:hover { color: inherit; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
   .post time { font-size: .82rem; color: var(--ink-2); font-weight: 600; }

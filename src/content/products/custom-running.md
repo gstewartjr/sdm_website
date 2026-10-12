@@ -3,6 +3,7 @@ title: Personalized Running Medal Hanger
 line: medal-hangers
 kind: custom
 label: RUN
+image: ../../assets/products/amazon-main.jpg
 summary: A 20" steel hanger with your runner's name, colors and race graphics.
 features:
   - 20" wide, 0.1" thick steel

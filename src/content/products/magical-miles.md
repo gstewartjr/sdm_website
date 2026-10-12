@@ -9,6 +9,7 @@ features:
   - Ships ready to hang
   - Powder-coated finish
 order: 11
+draft: true # hidden until it has a photo
 ---
 
 A stock design for the race-weekend medal collection.

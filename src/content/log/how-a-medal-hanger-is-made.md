@@ -16,7 +16,7 @@ customer picked. From there:
 3. **Powder coat.** A powder-coat finish gives the glossy color and rounds
    over any sharp edges.
 4. **Pack and ship.** The family helps with packaging and labels, and orders go
-   out by USPS Priority Mail.
+   out on Monday.
 
 ## Video
 

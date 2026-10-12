@@ -8,7 +8,6 @@ GitHub is published automatically in about a minute.
 | To change…                       | Edit                                   |
 | -------------------------------- | -------------------------------------- |
 | Email, Amazon/Etsy/YouTube links | `src/data/site.ts`                     |
-| Product lines (coming soon etc.) | `src/data/site.ts`                     |
 | A product                        | `src/content/products/<name>.md`       |
 | Add a product                    | copy `src/content/products/_template.md` |
 | Build-log post                   | `src/content/log/<name>.md` (copy `_template.md`) |
@@ -17,6 +16,7 @@ GitHub is published automatically in about a minute.
 | Old Shopify URL redirects        | `public/_redirects`                    |
 
 Files starting with `_` and anything with `draft: true` are not published.
+A product with `amazon: false` shows only the Etsy button.
 
 **Quick edits without any setup:** open the file on github.com, click the
 pencil icon, edit, and click **Commit changes**. The site updates by itself.

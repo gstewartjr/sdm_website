@@ -23,24 +23,3 @@ export const nav = [
   { href: '/about/', label: 'About' },
 ];
 
-// Product lines. Set `live: false` to show a line as "coming soon".
-export const productLines = [
-  {
-    id: 'medal-hangers',
-    name: 'Medal Hangers',
-    blurb: 'Powder-coated steel displays for runners, swimmers, gymnasts and every sport in between.',
-    live: true,
-  },
-  {
-    id: 'electronics',
-    name: 'Electronics',
-    blurb: 'Small-batch boards and gadgets, designed and assembled in the shop.',
-    live: false,
-  },
-  {
-    id: 'metal-works',
-    name: 'Metal Works',
-    blurb: 'Signs, brackets and one-off pieces cut from steel and aluminum.',
-    live: false,
-  },
-] as const;

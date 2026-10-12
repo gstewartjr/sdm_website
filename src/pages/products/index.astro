@@ -2,14 +2,12 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { productLines } from '../../data/site';
 
 const all = (await getCollection('products', (p) => !p.data.draft)).sort((a, b) => a.data.order - b.data.order);
 const groups = [
   { title: 'Personalized', note: 'Your name, colors and graphics.', items: all.filter((p) => p.data.kind === 'custom') },
   { title: 'Ready to ship', note: 'Stock designs, no customization needed.', items: all.filter((p) => p.data.kind === 'stock') },
 ];
-const soon = productLines.filter((l) => !l.live);
 ---
 <Base title="Products" description="Personalized and stock steel medal hangers from SanDiegoMake.">
   <section class="section">
@@ -26,16 +24,6 @@ const soon = productLines.filter((l) => !l.live);
         </div>
       ))}
 
-      {soon.length > 0 && (
-        <div class="group">
-          <h2>Coming soon</h2>
-          <div class="grid">
-            {soon.map((l) => (
-              <div class="card soon"><h3>{l.name}</h3><p class="muted">{l.blurb}</p></div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   </section>
 </Base>
@@ -43,6 +31,4 @@ const soon = productLines.filter((l) => !l.live);
   .group { margin-top: 56px; }
   .group h2 { margin-bottom: .2em; }
   .group > .muted { margin-bottom: 24px; }
-  .soon { padding: 24px; background: transparent; border-style: dashed; }
-  .soon p { margin: 0; }
 </style>
