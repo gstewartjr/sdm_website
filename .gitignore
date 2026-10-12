@@ -7,3 +7,6 @@ dist/
 .DS_Store
 photos-inbox/*
 !photos-inbox/README.md
+
+# DNS zone backups
+*.com.txt
