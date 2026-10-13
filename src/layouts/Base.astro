@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 import { site, nav } from '../data/site';
 
 interface Props { title?: string; description?: string; image?: string }
@@ -30,13 +32,8 @@ const year = new Date().getFullYear();
     <a class="visually-hidden" href="#main">Skip to content</a>
     <header class="hdr">
       <div class="wrap hdr__in">
-        <a class="logo" href="/" aria-label={`${site.name} home`}>
-          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-            <rect width="32" height="32" rx="7" fill="#17191c" />
-            <path d="M10 13v5q0 2 2 2 M16 13v5q0 2 2 2 M22 13v5q0 2 2 2" stroke="#c2410c" stroke-width="2" fill="none" stroke-linecap="round" />
-            <rect x="7" y="9" width="18" height="5" rx="1.5" fill="#f5f3ef" />
-          </svg>
-          <span>SanDiego<b>Make</b></span>
+        <a class="logo" href="/">
+          <Image src={logo} alt={`${site.name} home`} height={44} densities={[1, 2, 3]} loading="eager" />
         </a>
         <nav aria-label="Main">
           <ul class="nav">
@@ -87,9 +84,8 @@ const year = new Date().getFullYear();
     <style>
       .hdr { position: sticky; top: 0; z-index: 10; background: rgba(245, 243, 239, .92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
       .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; flex-wrap: wrap; }
-      .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-head); font-size: 1.2rem; font-weight: 600; }
-      .logo b { font-weight: 800; color: var(--accent); }
-      .logo:hover { color: inherit; }
+      .logo { display: flex; align-items: center; }
+      .logo img { display: block; height: 44px; width: auto; }
       .nav { list-style: none; display: flex; gap: 4px 22px; margin: 0; padding: 0; flex-wrap: wrap; }
       .nav a { text-decoration: none; font-weight: 550; font-size: .95rem; padding: 6px 0; border-bottom: 2px solid transparent; }
       .nav a[aria-current='page'] { border-color: var(--accent); }
