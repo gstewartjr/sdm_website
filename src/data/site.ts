@@ -13,7 +13,7 @@ export const site = {
   // Free form service for the custom/bulk quote form.
   // Create a form at https://formspree.io (or similar) and paste its endpoint here,
   // e.g. 'https://formspree.io/f/abcdwxyz'. Left blank, the form opens an email instead.
-  quoteFormEndpoint: '',
+  quoteFormEndpoint: 'https://formspree.io/f/mdeawzgj',
 };
 
 export const nav = [
